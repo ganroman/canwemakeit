@@ -5,3 +5,6 @@
 secrets/*
 !secrets/.gitkeep
 *.log
+.deploy/
+.deploy.lock
+__pycache__/

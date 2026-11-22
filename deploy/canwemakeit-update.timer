@@ -1,0 +1,10 @@
+[Unit]
+Description=Check GitHub for a verified Can we make it update every two minutes
+
+[Timer]
+OnBootSec=1min
+OnUnitInactiveSec=2min
+Unit=canwemakeit-update.service
+
+[Install]
+WantedBy=timers.target

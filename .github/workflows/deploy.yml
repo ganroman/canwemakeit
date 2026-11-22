@@ -1,0 +1,43 @@
+name: Verify deployment
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: verify-deployment-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Container checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Check deployment decisions and rollback
+        run: python3 -m unittest discover -s tests -v
+      - name: Validate Compose and routing
+        run: |
+          docker compose config --quiet
+          docker compose --profile public config --quiet
+          docker compose run --rm --no-deps gateway caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
+      - name: Build and start the site
+        run: |
+          docker compose build --pull homepage
+          docker compose up -d --no-build --wait --wait-timeout 120 homepage gateway
+      - name: Check the running site
+        run: bash deploy/check-site.sh
+      - name: Show container logs on failure
+        if: failure()
+        run: docker compose logs --tail=100 homepage gateway
+      - name: Stop test containers
+        if: always()
+        run: docker compose down --volumes

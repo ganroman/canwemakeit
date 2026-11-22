@@ -2,6 +2,8 @@
 
 A small, responsive front page for **canwemakeit.tech**, with space for software prototypes at `/p2d/`, `/findra/`, and future paths. Plain HTML and CSS; no Node install, JavaScript, analytics, or external font service required. The two prototype cards are explicitly marked **Planned**. They do not claim the apps are deployed.
 
+For automatic deployment after each merged PR, see [the automation setup](deploy/AUTOMATIC-DEPLOYMENT.md). GitHub checks the merged commit; a home-server timer deploys it after those checks pass. The steps below also support manual deployment.
+
 ## How requests reach your home server
 
 ```text
@@ -39,7 +41,7 @@ ssh YOUR_USER@YOUR_SERVER
 cd ~/canwemakeit
 ```
 
-A Git repository has been initialized locally on `main`. No remote repository is required for this copy-based deployment. You can also commit the files, push to your own Git remote, and clone that repository on the server later.
+The repository is [ganroman/canwemakeit](https://github.com/ganroman/canwemakeit). Its `main` branch requires pull requests. Copy-based deployment works for a manual installation; automatic deployment requires a Git clone as described in the automation setup.
 
 ## 2. Start and check the homepage
 
@@ -173,7 +175,7 @@ docker compose build --pull homepage
 docker compose --profile public up -d
 ```
 
-Nginx and Caddy use version-family tags; cloudflared uses its upstream `latest` tag. These tags can change. After your first successful deployment, pin approved image versions or digests if you want fully repeatable releases. Updates are manual; no automatic updater is installed.
+Nginx and Caddy use version-family tags; cloudflared uses its upstream `latest` tag. These tags can change. After your first successful deployment, pin approved image versions or digests if you want fully repeatable releases. The optional deployment timer rebuilds the homepage after successful `main` checks; independent base-image upgrades use the commands above.
 
 Useful checks:
 
