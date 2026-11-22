@@ -4,6 +4,7 @@
 
 :80 {
 	encode zstd gzip
+	header >X-Robots-Tag "noindex, nofollow"
 
 	# Enable these routes only after the corresponding app is running.
 	# The app must support its public base path (see README.md).
