@@ -1,6 +1,6 @@
 # Can we make it
 
-A small, responsive front page for **canwemakeit.tech**, with space for software prototypes at `/p2d/`, `/findra/`, and future paths. Plain HTML and CSS; no Node install, JavaScript, analytics, or external font service required. The two prototype cards are explicitly marked **Planned**. They do not claim the apps are deployed.
+A small, responsive front page for **canwemakeit.tech**, with space for software prototypes at `/p2d/`, `/findra/`, and future paths. Plain HTML and CSS; no Node install, JavaScript, analytics, or external font service required. No prototypes are currently listed; they can be added when ready.
 
 For automatic deployment after each merged PR, see [the automation setup](deploy/AUTOMATIC-DEPLOYMENT.md). GitHub checks the merged commit; a home-server timer deploys it after those checks pass. The steps below also support manual deployment.
 
@@ -178,7 +178,7 @@ For example, to make **https://canwemakeit.tech/p2d/** reach a P2D container:
 
    Expect a redirect to `/p2d/`, then the app's normal response. Check its assets, nested pages, API requests, and login flow in a browser too.
 
-6. Update its card in `public/index.html`: change “Planned” and “Not live yet”, replace the placeholder description, and add a real `<a href="/p2d/">Open prototype</a>` link. Rebuild the homepage as below.
+6. Add its card to the workbench section in `public/index.html`, with a description and a real `<a href="/p2d/">Open prototype</a>` link. Rebuild the homepage as below.
 
 Repeat with the alias `findra`, base path `/findra`, and the Findra Caddy block. Until enabled, both paths return a real HTTP 404 with the project's “Nothing here. Yet.” page. They do not silently show the homepage.
 
