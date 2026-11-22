@@ -63,9 +63,34 @@ To preview from your Mac without exposing a LAN port, open another terminal on t
 ssh -N -L 8080:127.0.0.1:8080 YOUR_USER@YOUR_SERVER
 ```
 
-Then visit **http://localhost:8080**. Keep that SSH connection running while previewing.
+Then visit **http://localhost:8080**. Keep that SSH connection running while previewing. For direct HTTPS access from your Tailscale devices, use the setup below instead.
 
 For a design-only preview on any computer with Python, use `python3 -m http.server 8765 --directory public` and open http://localhost:8765. This does not test Nginx, Caddy, the custom 404 response, or the tunnel.
+
+### HTTPS access within Tailscale
+
+Tailscale Serve can make the site available at **https://homeserver.tail0e01c3.ts.net** to devices permitted by your Tailscale access rules. Use this hostname rather than `https://100.97.104.68`: the trusted TLS certificate covers the hostname, not the numeric IP address.
+
+On the home server, with the homepage and gateway already running:
+
+```sh
+sudo tailscale serve --bg --https=443 http://127.0.0.1:8080
+```
+
+If Tailscale prints an enablement link, open that link and enable Serve/HTTPS for the network. The command can then finish configuring the proxy. Verify from a device connected to the same Tailscale network:
+
+```sh
+curl -fsS https://homeserver.tail0e01c3.ts.net/healthz
+```
+
+Expect `ok`. Tailscale manages the HTTPS certificate and forwards requests to the existing loopback gateway. Keep the Compose port binding at `127.0.0.1:8080:80`; no Tailscale IP binding or router port forwarding is needed. Tailscale Serve does not publish the site to the public internet. Public access through `canwemakeit.tech` remains a separate Cloudflare setup.
+
+The `--bg` configuration persists after logout and reboot while the Tailscale service runs. It is independent of container updates, so merged PRs continue deploying behind the same HTTPS address. To inspect or remove this particular listener:
+
+```sh
+tailscale serve status
+sudo tailscale serve --https=443 off
+```
 
 ## 3. Connect Cloudflare
 
