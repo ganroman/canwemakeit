@@ -1,0 +1,22 @@
+{
+	auto_https off
+}
+
+:80 {
+	encode zstd gzip
+
+	# Enable these routes only after the corresponding app is running.
+	# The app must support its public base path (see README.md).
+	# redir /p2d /p2d/ 308
+	# handle /p2d/* {
+	#     reverse_proxy p2d:3000
+	# }
+	# redir /findra /findra/ 308
+	# handle /findra/* {
+	#     reverse_proxy findra:3000
+	# }
+
+	handle {
+		reverse_proxy homepage:8080
+	}
+}
