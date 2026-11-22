@@ -1,0 +1,8 @@
+[Unit]
+Description=Deploy the latest verified Can we make it main commit
+
+[Service]
+Type=oneshot
+WorkingDirectory=%h/canwemakeit
+ExecStart=/usr/bin/flock -n %h/canwemakeit/.deploy.lock /bin/bash %h/canwemakeit/deploy/update.sh
+TimeoutStartSec=15min

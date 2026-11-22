@@ -2,6 +2,7 @@ name: canwemakeit
 
 services:
   homepage:
+    image: canwemakeit-homepage:local
     build: .
     restart: unless-stopped
     read_only: true
