@@ -4,6 +4,12 @@ A small, responsive front page for **canwemakeit.tech**, with space for software
 
 For automatic deployment after each merged PR, see [the automation setup](deploy/AUTOMATIC-DEPLOYMENT.md). GitHub checks the merged commit; a home-server timer deploys it after those checks pass. The steps below also support manual deployment.
 
+## Search indexing
+
+The gateway sends `X-Robots-Tag: noindex, nofollow` on all responses, including assets, errors, and future prototype routes. The homepage and 404 page also include the equivalent robots meta tag. Deployment checks verify these directives.
+
+Compliant search engines should not include this site in search results. Pages remain accessible to visitors; this is not access control. Crawling is intentionally allowed so search engines can read the no-index directive. Do not add a blanket `robots.txt` disallow rule, which could prevent that. If a page was already indexed, removal requires a recrawl; search-engine removal tools can request faster removal.
+
 ## How requests reach your home server
 
 ```text
